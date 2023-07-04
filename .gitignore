@@ -1,0 +1,37 @@
+# Arquivos executáveis
+*.exe
+*.exe~
+
+# Arquivos gerados pela compilação
+*.o
+*.a
+*.test
+*.prof
+
+# Binários e diretórios gerados
+bin/
+obj/
+
+# Arquivos de dependências gerados pelo gerenciador de pacotes
+/go.sum
+/go.mod
+
+# Arquivos de log
+*.log
+
+# Diretório de saída de compilação
+/out/
+
+# Arquivos específicos de IDEs e editores de código
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos gerados por ferramentas de formatação
+*.tmp
+*.bak
+
+# Arquivos de configuração do sistema
+.DS_Store
+Thumbs.db
