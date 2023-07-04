@@ -13,6 +13,7 @@ func main() {
 	models.ConnectDatabase()
 
 	router.POST("/user", controllers.CreateUser)
+	router.GET("/user", controllers.ReadUsers)
 
 	router.Run("localhost:8080")
 }
