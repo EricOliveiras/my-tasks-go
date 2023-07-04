@@ -35,10 +35,17 @@ func CreateUser(c *gin.Context) {
 		ID:        input.ID,
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
-		Email:     input.Email,	
+		Email:     input.Email,
 	}
 
 	models.DB.Create(&user)
 
 	c.JSON(http.StatusCreated, gin.H{"data": user})
+}
+
+func ReadUsers(c *gin.Context) {
+	var users []models.User
+	models.DB.Find(&users)
+
+	c.JSON(http.StatusOK, gin.H{"data": users})
 }
