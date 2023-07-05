@@ -7,8 +7,10 @@ services:
     restart: always
     ports:
       - 5432:5432
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=go-crud
     volumes:
       - pgdata:/var/lib/postgresql/data
 
