@@ -29,6 +29,7 @@ Este projeto foi desenvolvido como uma aplicação em Go, que utiliza as melhore
 Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 
 - Docker: [Instalação do Docker](https://docs.docker.com/get-docker/)
+- Docker Compose: [Instalação do Docker Compose ](https://docs.docker.com/compose/)
 
 ## Rodando o projeto
 
