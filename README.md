@@ -42,7 +42,7 @@ git clone https://github.com/EricOliveiras/basic-crud-go
 ```bash
 cd basic-crud-go  
 ```
-3. Rode o seguinte comando e aguarde a instalaçao
+3. Rode o seguinte comando e aguarde a instalação
 ```bash
 docker-compose up -d
 ```
