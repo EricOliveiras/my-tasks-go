@@ -12,9 +12,6 @@
 bin/
 obj/
 
-# Arquivos de dependências gerados pelo gerenciador de pacotes
-/go.sum
-
 # Arquivos de log
 *.log
 
