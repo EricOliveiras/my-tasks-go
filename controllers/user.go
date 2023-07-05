@@ -49,3 +49,13 @@ func ReadUsers(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
+
+func ReadUser(c *gin.Context) {
+	var user models.User
+	if err := models.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}
