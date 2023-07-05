@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github/ericoliveiras/basic-crud-go/database"
 	"github/ericoliveiras/basic-crud-go/models"
 	"net/http"
 
@@ -23,7 +24,7 @@ func CreateUser(c *gin.Context) {
 	}
 
 	var existingUser models.User
-	result := models.DB.Where("email = ?", input.Email).First(&existingUser)
+	result := database.DB.Where("email = ?", input.Email).First(&existingUser)
 	if result.Error == nil {
 		c.AbortWithStatusJSON(http.StatusConflict, gin.H{"ERROR::": "Email already exists."})
 		return
@@ -38,21 +39,21 @@ func CreateUser(c *gin.Context) {
 		Email:     input.Email,
 	}
 
-	models.DB.Create(&user)
+	database.DB.Create(&user)
 
 	c.JSON(http.StatusCreated, gin.H{"data": user})
 }
 
 func ReadUsers(c *gin.Context) {
 	var users []models.User
-	models.DB.Find(&users)
+	database.DB.Find(&users)
 
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
 func ReadUser(c *gin.Context) {
 	var user models.User
-	if err := models.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+	if err := database.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
 		return
 	}
