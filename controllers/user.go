@@ -16,6 +16,11 @@ type CreateUserInput struct {
 	Email     string `json:"email" binding:"required"`
 }
 
+type UpdateUserInput struct {
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+}
+
 func CreateUser(c *gin.Context) {
 	var input CreateUserInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -59,4 +64,38 @@ func ReadUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
+}
+
+func UpdateUser(c *gin.Context) {
+	var user models.User
+	if err := database.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
+		return
+	}
+
+	var input UpdateUserInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	updateUser := models.User{
+		FirstName: input.FirstName,
+		LastName:  input.LastName,
+	}
+
+	database.DB.Model(&user).Updates(&updateUser)
+
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}
+
+func DeleteUser(c *gin.Context) {
+	var user models.User
+	if err := database.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
+	}
+
+	database.DB.Delete(&user)
+
+	c.Status(http.StatusOK)
 }
