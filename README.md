@@ -97,7 +97,7 @@ docker-compose up -d
 | `first_name` | `string` | **Opcional**.   |
 | `last_name`  | `string` | **Opcional**.   |
 
-### Deletta um usuário
+### Deleta um usuário
 
 ```http
   DELETE /user/${id}
