@@ -9,13 +9,13 @@ Este projeto foi desenvolvido como uma aplicação em Go, que utiliza as melhore
 ## Próximos passos
 
 - [x] Finalizar os métodos de Atualizar e deleter usuário.
+- [x] Configurar armazenamento seguro de senhas.
+  - [x] Utilizar algoritmos de hash seguros, como bcrypt.
+  - [x] Criptografar e armazenar as senhas dos usuários de forma segura.
 - [ ] Adicionar autorização aos endpoints.
   - [ ] Definir papéis de usuário (por exemplo, administrador, usuário comum).
   - [ ] Implementar verificação de permissões de acesso.
   - [ ] Restringir acesso a determinados endpoints com base nas permissões do usuário.
-- [ ] Configurar armazenamento seguro de senhas.
-  - [ ] Utilizar algoritmos de hash seguros, como bcrypt.
-  - [ ] Criptografar e armazenar as senhas dos usuários de forma segura.
 - [ ] Realizar testes automatizados.
   - [ ] Escrever testes unitários para as funcionalidades implementadas.
   - [ ] Testar casos de sucesso e casos de erro.
