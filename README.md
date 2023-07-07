@@ -68,6 +68,7 @@ docker-compose up -d
 | `first_name` | `string` | **Obrigatório**. |
 | `last_name`  | `string` | **Opcional**.    |
 | `email`      | `string` | **Obrigatório**. |
+| `password`   | `string` | **Obrigatório**. |
 
 ### Retorna todos os usuários
 
