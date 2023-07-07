@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github/ericoliveiras/basic-crud-go/database"
+	"github/ericoliveiras/basic-crud-go/handlers"
 	"github/ericoliveiras/basic-crud-go/models"
 	"net/http"
 
@@ -14,6 +15,7 @@ type CreateUserInput struct {
 	FirstName string `json:"first_name" binding:"required"`
 	LastName  string `json:"last_name"`
 	Email     string `json:"email" binding:"required"`
+	Password  string `json:"password" binding:"required"`
 }
 
 type UpdateUserInput struct {
@@ -37,11 +39,18 @@ func CreateUser(c *gin.Context) {
 
 	input.ID = uuid.New().String()
 
+	hashPassword, err := handlers.HashPassword(input.Password)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
 	user := models.User{
 		ID:        input.ID,
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
 		Email:     input.Email,
+		Password:  hashPassword,
 	}
 
 	database.DB.Create(&user)
