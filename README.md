@@ -12,6 +12,7 @@ Este projeto foi desenvolvido como uma aplicação em Go, que utiliza as melhore
 - [x] Configurar armazenamento seguro de senhas.
   - [x] Utilizar algoritmos de hash seguros, como bcrypt.
   - [x] Criptografar e armazenar as senhas dos usuários de forma segura.
+- [x] Separar responsibilidade de rotas da função main.
 - [ ] Adicionar autorização aos endpoints.
   - [ ] Definir papéis de usuário (por exemplo, administrador, usuário comum).
   - [ ] Implementar verificação de permissões de acesso.
