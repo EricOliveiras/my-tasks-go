@@ -67,7 +67,7 @@ func ReadUsers(c *gin.Context) {
 
 func ReadUser(c *gin.Context) {
 	var user models.User
-	if err := database.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+	if err := database.DB.Preload("Task").Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
 		return
 	}
