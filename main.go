@@ -14,6 +14,7 @@ func main() {
 	database.ConnectDatabase()
 
 	routes.UserRouter(router)
+	routes.TaskRouter(router)
 
 	router.Run(config.BaseURL())
 }
