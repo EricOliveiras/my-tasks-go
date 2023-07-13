@@ -17,6 +17,12 @@ type CreateTaskInput struct {
 	Finished    bool   `json:"finished"`
 }
 
+type UpdateTaskInput struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Finished    bool   `json:"finished"`
+}
+
 func CreateTask(c *gin.Context) {
 	var input CreateTaskInput
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -54,4 +60,40 @@ func ReadTask(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": task})
+}
+
+func UpdateTask(c *gin.Context) {
+	var task models.Task
+	if err := database.DB.Where("id = ?", c.Param("id")).First(&task).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
+		return
+	}
+
+	var inputUpdateTask UpdateTaskInput
+	if err := c.ShouldBindJSON(&inputUpdateTask); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	updateTask := models.Task {
+		Title: inputUpdateTask.Title,
+		Description: inputUpdateTask.Description,
+		Finished: inputUpdateTask.Finished,
+	}
+
+	database.DB.Model(&task).Updates(&updateTask)
+
+	c.JSON(http.StatusOK, gin.H{"data": task})
+}
+
+func DeleteTask(c *gin.Context) {
+	var task models.Task
+	if err := database.DB.Where("id = ?", c.Param("id")).First(&task).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
+		return
+	}
+
+	database.DB.Delete(&task)
+
+	c.Status(http.StatusOK)
 }
