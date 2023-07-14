@@ -13,6 +13,7 @@ func main() {
 
 	database.ConnectDatabase()
 
+	routes.AuthRouter(router)
 	routes.UserRouter(router)
 	routes.TaskRouter(router)
 
