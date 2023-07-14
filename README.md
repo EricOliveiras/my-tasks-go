@@ -14,6 +14,7 @@ Este projeto foi desenvolvido como uma aplicação em Go, que utiliza as melhore
   - [x] Criptografar e armazenar as senhas dos usuários de forma segura.
 - [x] Separar responsibilidade de rotas da função main.
 - [x] Criar novo modelo de Task, adicionar na migration, criar seu controller e suas rotas.
+- [x] Adicionar autenticação com JWT.
 - [ ] Adicionar autorização aos endpoints.
   - [ ] Definir papéis de usuário (por exemplo, administrador, usuário comum).
   - [ ] Implementar verificação de permissões de acesso.
