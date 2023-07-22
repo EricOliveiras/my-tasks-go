@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github/ericoliveiras/basic-crud-go/database"
+	"github/ericoliveiras/basic-crud-go/handlers"
 	"github/ericoliveiras/basic-crud-go/models"
 	"net/http"
 
@@ -11,7 +12,6 @@ import (
 
 type CreateTaskInput struct {
 	ID          string `json:"id"`
-	UserID      string `json:"user_id" binding:"required"`
 	Title       string `json:"title" binding:"required"`
 	Description string `json:"description"`
 	Finished    bool   `json:"finished"`
@@ -32,9 +32,14 @@ func CreateTask(c *gin.Context) {
 
 	input.ID = uuid.New().String()
 
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+	}
+
 	task := models.Task{
 		ID:          input.ID,
-		UserID:      input.UserID,
+		UserID:      userId,
 		Title:       input.Title,
 		Description: input.Description,
 		Finished:    false,
@@ -47,14 +52,26 @@ func CreateTask(c *gin.Context) {
 
 func ReadTasks(c *gin.Context) {
 	var tasks []models.Task
-	database.DB.Find(&tasks)
+
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+	}
+
+	database.DB.Find(&tasks).Where("user_id = ?", userId)
 
 	c.JSON(http.StatusOK, gin.H{"data": tasks})
 }
 
 func ReadTask(c *gin.Context) {
 	var task models.Task
-	if err := database.DB.Where("id = ?", c.Param("id")).First(&task).Error; err != nil {
+
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+	}
+
+	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
 		return
 	}
@@ -64,7 +81,13 @@ func ReadTask(c *gin.Context) {
 
 func UpdateTask(c *gin.Context) {
 	var task models.Task
-	if err := database.DB.Where("id = ?", c.Param("id")).First(&task).Error; err != nil {
+
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+	}
+
+	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
 		return
 	}
@@ -88,7 +111,13 @@ func UpdateTask(c *gin.Context) {
 
 func DeleteTask(c *gin.Context) {
 	var task models.Task
-	if err := database.DB.Where("id = ?", c.Param("id")).First(&task).Error; err != nil {
+
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+	}
+
+	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
 		return
 	}
