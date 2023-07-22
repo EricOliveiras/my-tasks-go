@@ -2,9 +2,12 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/golang-jwt/jwt/v5/request"
 	"github.com/jinzhu/now"
 	"github.com/joho/godotenv"
 )
@@ -57,4 +60,26 @@ func VerifyJWT(tokenString string) (*Claims, error) {
 	}
 
 	return claims, nil
+}
+
+func ExtractTokenFromRequest(r *http.Request) (string, error) {
+	tokenString, err := request.AuthorizationHeaderExtractor.ExtractToken(r)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
+func GetUsertIdFromClaims(c *gin.Context) (string, error) {
+	claims, exists := c.Get("claims")
+
+	if !exists {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR:": "BAD_REQUEST"})
+		return "", err
+	}
+
+	mapClaims := claims.(*Claims)
+
+	return mapClaims.ID, nil
 }
