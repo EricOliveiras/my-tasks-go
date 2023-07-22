@@ -65,9 +65,16 @@ func ReadUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": users})
 }
 
-func ReadUser(c *gin.Context) {
+func Me(c *gin.Context) {
 	var user models.User
-	if err := database.DB.Preload("Task").Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	if err := database.DB.Preload("Task").Where("id = ?", userId).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
 		return
 	}
@@ -77,7 +84,14 @@ func ReadUser(c *gin.Context) {
 
 func UpdateUser(c *gin.Context) {
 	var user models.User
-	if err := database.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	if err := database.DB.Where("id = ?", userId).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
 		return
 	}
@@ -100,7 +114,14 @@ func UpdateUser(c *gin.Context) {
 
 func DeleteUser(c *gin.Context) {
 	var user models.User
-	if err := database.DB.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+
+	userId, err := handlers.GetUsertIdFromClaims(c)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	if err := database.DB.Where("id = ?", userId).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
 	}
 
