@@ -58,13 +58,6 @@ func CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{"data": user})
 }
 
-func ReadUsers(c *gin.Context) {
-	var users []models.User
-	database.DB.Find(&users)
-
-	c.JSON(http.StatusOK, gin.H{"data": users})
-}
-
 func Me(c *gin.Context) {
 	var user models.User
 
@@ -123,6 +116,7 @@ func DeleteUser(c *gin.Context) {
 
 	if err := database.DB.Where("id = ?", userId).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
+		return
 	}
 
 	database.DB.Delete(&user)
