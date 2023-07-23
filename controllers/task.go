@@ -35,6 +35,7 @@ func CreateTask(c *gin.Context) {
 	userId, err := handlers.GetUsertIdFromClaims(c)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
 	}
 
 	task := models.Task{
@@ -56,6 +57,7 @@ func ReadTasks(c *gin.Context) {
 	userId, err := handlers.GetUsertIdFromClaims(c)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
 	}
 
 	database.DB.Find(&tasks).Where("user_id = ?", userId)
@@ -69,6 +71,7 @@ func ReadTask(c *gin.Context) {
 	userId, err := handlers.GetUsertIdFromClaims(c)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
 	}
 
 	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
@@ -85,6 +88,7 @@ func UpdateTask(c *gin.Context) {
 	userId, err := handlers.GetUsertIdFromClaims(c)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
 	}
 
 	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
@@ -115,6 +119,7 @@ func DeleteTask(c *gin.Context) {
 	userId, err := handlers.GetUsertIdFromClaims(c)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
 	}
 
 	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
