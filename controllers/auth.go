@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"github/ericoliveiras/basic-crud-go/config"
 	"github/ericoliveiras/basic-crud-go/database"
 	"github/ericoliveiras/basic-crud-go/handlers"
 	"github/ericoliveiras/basic-crud-go/models"
@@ -42,5 +43,23 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	cookieConfig := config.CookieConfig()
+
+	c.SetCookie(
+		"token",
+		token,
+		cookieConfig.MaxAge,
+		cookieConfig.Path,
+		cookieConfig.Domain,
+		cookieConfig.Secure,
+		cookieConfig.HttpOnly,
+	)
+
+	c.Status(http.StatusOK)
+}
+
+func Logout(c *gin.Context) {
+	c.SetCookie("token", "", -1, "/", "*", true, true)
+
+	c.Status(http.StatusOK)
 }
