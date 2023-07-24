@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/golang-jwt/jwt/v5/request"
 	"github.com/jinzhu/now"
 	"github.com/joho/godotenv"
 )
@@ -22,7 +22,7 @@ var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
 func GenerateToken(id string) (string, error) {
 	if err != nil {
-		panic("Error loading .env file")
+		log.Panic("Error loading .env file")
 	}
 
 	claims := Claims{
@@ -44,7 +44,7 @@ func GenerateToken(id string) (string, error) {
 
 func VerifyJWT(tokenString string) (*Claims, error) {
 	if err != nil {
-		panic("Error loading .env file")
+		log.Panic("Error loading .env file")
 	}
 
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
@@ -60,15 +60,6 @@ func VerifyJWT(tokenString string) (*Claims, error) {
 	}
 
 	return claims, nil
-}
-
-func ExtractTokenFromRequest(r *http.Request) (string, error) {
-	tokenString, err := request.AuthorizationHeaderExtractor.ExtractToken(r)
-	if err != nil {
-		return "", err
-	}
-
-	return tokenString, nil
 }
 
 func GetUsertIdFromClaims(c *gin.Context) (string, error) {
