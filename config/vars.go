@@ -47,7 +47,7 @@ func CookieConfig() CookieConfigModel {
 	cookieConfig := CookieConfigModel{
 		MaxAge:   604800,
 		Path:     "/",
-		Domain:   "*",
+		Domain:   "localhost",
 		Secure:   true,
 		HttpOnly: true,
 	}
