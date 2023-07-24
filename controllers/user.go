@@ -31,8 +31,7 @@ func CreateUser(c *gin.Context) {
 	}
 
 	var existingUser models.User
-	result := database.DB.Where("email = ?", input.Email).First(&existingUser)
-	if result.Error == nil {
+	if err := database.DB.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
 		c.AbortWithStatusJSON(http.StatusConflict, gin.H{"ERROR::": "Email already exists."})
 		return
 	}
@@ -119,7 +118,15 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 
-	database.DB.Delete(&user)
+	if err := database.DB.Where("user_id = ?", userId).Delete(&models.Task{}).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"ERROR::": "Failed to delete tasks."})
+		return
+	}
+
+	if err := database.DB.Delete(&user).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"ERROR::": "Failed to delete user."})
+		return
+	}
 
 	c.Status(http.StatusOK)
 }
