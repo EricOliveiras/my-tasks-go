@@ -3,6 +3,7 @@ package database
 import (
 	"github/ericoliveiras/basic-crud-go/config"
 	"github/ericoliveiras/basic-crud-go/models"
+	"log"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -17,14 +18,14 @@ func ConnectDatabase() {
 	err = godotenv.Load()
 
 	if err != nil {
-		panic("Error loading .env file")
+		log.Panic("Error loading .env file")
 	}
 
 	dsn := config.DbURL()
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		panic("Failed to connect to database")
+		log.Panic("Failed to connect to database")
 	}
 
 	DB.AutoMigrate(&models.User{}, &models.Task{})
