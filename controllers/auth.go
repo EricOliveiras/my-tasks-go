@@ -59,7 +59,7 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	c.SetCookie("token", "", -1, "/", "*", true, true)
+	c.SetCookie("token", "", -1, "/", "localhost", true, true)
 
 	c.Status(http.StatusOK)
 }
