@@ -13,7 +13,7 @@ var err = godotenv.Load()
 var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
 func AuthMiddleware(c *gin.Context) {
-	tokenString, err := handlers.ExtractTokenFromRequest(c.Request)
+	tokenString, err := c.Cookie("token")
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"ERROR::": "Invalid Token"})
 		c.Abort()
