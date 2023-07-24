@@ -2,16 +2,25 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/joho/godotenv"
 )
 
+type CookieConfigModel struct {
+	MaxAge   int
+	Path     string
+	Domain   string
+	Secure   bool
+	HttpOnly bool
+}
+
 var err = godotenv.Load()
 
 func DbURL() string {
 	if err != nil {
-		panic("Error loading .env file")
+		log.Panic("Error loading .env file")
 	}
 
 	dbHost := os.Getenv("DB_HOST")
@@ -25,11 +34,23 @@ func DbURL() string {
 
 func BaseURL() string {
 	if err != nil {
-		panic("Error loading .env file")
+		log.Panic("Error loading .env file")
 	}
 
 	port := os.Getenv("PORT")
 	host := os.Getenv("HOST")
 
 	return fmt.Sprintf("%s:%s", host, port)
+}
+
+func CookieConfig() CookieConfigModel {
+	cookieConfig := CookieConfigModel{
+		MaxAge:   604800,
+		Path:     "/",
+		Domain:   "*",
+		Secure:   true,
+		HttpOnly: true,
+	}
+
+	return cookieConfig
 }
