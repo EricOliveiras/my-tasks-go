@@ -13,6 +13,8 @@ func main() {
 
 	database.ConnectDatabase()
 
+	router.Use(config.CorsConfig())
+
 	routes.AuthRouter(router)
 	routes.UserRouter(router)
 	routes.TaskRouter(router)
