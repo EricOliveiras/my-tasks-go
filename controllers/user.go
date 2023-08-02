@@ -5,6 +5,7 @@ import (
 	"github/ericoliveiras/basic-crud-go/handlers"
 	"github/ericoliveiras/basic-crud-go/models"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -69,6 +70,16 @@ func Me(c *gin.Context) {
 	if err := database.DB.Preload("Task").Where("id = ?", userId).First(&user).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "User not found or not exists."})
 		return
+	}
+
+	user = models.User{
+		ID: user.ID,
+		FirstName: strings.Title(user.FirstName),
+		LastName: strings.Title(user.LastName),
+		Email: user.Email,
+		Task: user.Task,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
