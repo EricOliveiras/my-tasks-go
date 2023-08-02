@@ -18,9 +18,14 @@ type CreateTaskInput struct {
 }
 
 type UpdateTaskInput struct {
+	IdTaskRequest
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	Finished    bool   `json:"finished"`
+	Finished    *bool  `json:"finished"`
+}
+
+type IdTaskRequest struct {
+	Id string `json:"id"`
 }
 
 func CreateTask(c *gin.Context) {
@@ -91,21 +96,24 @@ func UpdateTask(c *gin.Context) {
 		return
 	}
 
-	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
-		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
-		return
-	}
-
 	var inputUpdateTask UpdateTaskInput
 	if err := c.ShouldBindJSON(&inputUpdateTask); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
 		return
 	}
 
-	updateTask := models.Task {
-		Title: inputUpdateTask.Title,
+	if err := database.DB.Where("id = ? AND user_id = ?", inputUpdateTask.IdTaskRequest.Id, userId).First(&task).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
+		return
+	}
+
+	updateTask := models.Task{
+		Title:       inputUpdateTask.Title,
 		Description: inputUpdateTask.Description,
-		Finished: inputUpdateTask.Finished,
+	}
+
+	if inputUpdateTask.Finished != nil {
+		updateTask.Finished = *inputUpdateTask.Finished
 	}
 
 	database.DB.Model(&task).Updates(&updateTask)
@@ -115,6 +123,12 @@ func UpdateTask(c *gin.Context) {
 
 func DeleteTask(c *gin.Context) {
 	var task models.Task
+	var req IdTaskRequest
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
 
 	userId, err := handlers.GetUsertIdFromClaims(c)
 	if err != nil {
@@ -122,7 +136,7 @@ func DeleteTask(c *gin.Context) {
 		return
 	}
 
-	if err := database.DB.Where("id = ? AND user_id = ?", c.Param("id"), userId).First(&task).Error; err != nil {
+	if err := database.DB.Where("id = ? AND user_id = ?", req.Id, userId).First(&task).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
 		return
 	}
