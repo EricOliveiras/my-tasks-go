@@ -6,6 +6,8 @@ O objetivo deste projeto é colocar em prática os conhecimentos adquiridos em G
 
 Este projeto foi desenvolvido como uma aplicação em Go, que utiliza as melhores práticas e padrões recomendados para a linguagem. Ao implementar este projeto, busquei aprofundar meus conhecimentos e aprimorar minhas habilidades em Go, aplicando as técnicas aprendidas em um contexto prático.
 
+Obs: Você pode utilizar este projeto front-end - [My Tasks](https://github.com/EricOliveiras/my-tasks) - para consumir está API.
+
 ## Próximos passos
 
 - [x] Finalizar os métodos de Atualizar e deleter usuário.
@@ -70,43 +72,83 @@ docker-compose up -d
 | `email`      | `string` | **Obrigatório**. |
 | `password`   | `string` | **Obrigatório**. |
 
-### Retorna todos os usuários
+### Login
 
 ```http
-  GET /user
+  POST /auth/login
 ```
+
+| Parâmetro  | Tipo     | Descrição        |
+| :--------- | :------- | :--------------- |
+| `email`    | `string` | **Obrigatório**. |
+| `password` | `string` | **Obrigatório**. |
+
+| Retorno | Tipo     | Descrição |
+| :------ | :------- | :-------- |
+| `token` | `string` |
 
 ### Retorna um usuário
 
 ```http
-  GET /user/${id}
+  GET /user/me
+  Authorization: Bearer Token
 ```
-
-| Parâmetro | Tipo     | Descrição       |
-| :-------- | :------- | :-------------- |
-| `id`      | `string` | **Obrigatório** |
 
 ### Atualiza um usuário
 
 ```http
-  PUT /user/${id}
+  PUT /user
+  Authorization: Bearer Token
 ```
 
-| Parâmetro    | Tipo     | Descrição       |
-| :----------- | :------- | :-------------- |
-| `id`         | `string` | **Obrigatório** |
-| `first_name` | `string` | **Opcional**.   |
-| `last_name`  | `string` | **Opcional**.   |
+| Parâmetro    | Tipo     | Descrição     |
+| :----------- | :------- | :------------ |
+| `first_name` | `string` | **Opcional**. |
+| `last_name`  | `string` | **Opcional**. |
 
 ### Deleta um usuário
 
 ```http
-  DELETE /user/${id}
+  DELETE /user
+  Authorization: Bearer Token
 ```
 
-| Parâmetro | Tipo     | Descrição       |
-| :-------- | :------- | :-------------- |
-| `id`      | `string` | **Obrigatório** |
+### Cria uma tarefa
+
+```http
+  POST /task
+  Authorization: Bearer Token
+```
+
+| Parâmetro     | Tipo     | Descrição        |
+| :------------ | :------- | :--------------- |
+| `title`       | `string` | **Obrigatório**. |
+| `description` | `string` | **Opcional**.    |
+
+### Atualiza uma tarefa
+
+```http
+  PUT /task
+  Authorization: Bearer Token
+```
+
+| Parâmetro     | Tipo      | Descrição        |
+| :------------ | :-------- | :--------------- |
+| `id`          | `string`  | **Obrigatório**. |
+| `title`       | `string`  | **Opcional**.    |
+| `description` | `string`  | **Opcional**.    |
+| `finished`    | `boolean` | **Opcional**.    |
+
+### Deeleta uma tarefa
+
+```http
+  DELETE /task
+  Authorization: Bearer Token
+```
+
+| Parâmetro | Tipo     | Descrição        |
+| :-------- | :------- | :--------------- |
+| `id`      | `string` | **Obrigatório**. |
 
 ## Stack utilizada
 
