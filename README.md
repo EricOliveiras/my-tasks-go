@@ -105,6 +105,7 @@ docker-compose up -d
 | :----------- | :------- | :------------ |
 | `first_name` | `string` | **Opcional**. |
 | `last_name`  | `string` | **Opcional**. |
+| `password`   | `string` | **Opcional**. |
 
 ### Deleta um usuário
 
