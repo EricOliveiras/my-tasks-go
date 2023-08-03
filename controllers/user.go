@@ -22,6 +22,7 @@ type CreateUserInput struct {
 type UpdateUserInput struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
+	Password  *string `json:"password"`
 }
 
 func CreateUser(c *gin.Context) {
@@ -73,11 +74,11 @@ func Me(c *gin.Context) {
 	}
 
 	user = models.User{
-		ID: user.ID,
+		ID:        user.ID,
 		FirstName: strings.Title(user.FirstName),
-		LastName: strings.Title(user.LastName),
-		Email: user.Email,
-		Task: user.Task,
+		LastName:  strings.Title(user.LastName),
+		Email:     user.Email,
+		Task:      user.Task,
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
 	}
@@ -108,6 +109,16 @@ func UpdateUser(c *gin.Context) {
 	updateUser := models.User{
 		FirstName: input.FirstName,
 		LastName:  input.LastName,
+	}
+
+	if input.Password != nil {
+		newPass, err := handlers.HashPassword(*input.Password)
+		if err != nil {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+			return
+		}	
+
+		updateUser.Password = newPass
 	}
 
 	database.DB.Model(&user).Updates(&updateUser)
