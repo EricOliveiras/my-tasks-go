@@ -6,8 +6,10 @@ COPY go.mod go.sum ./
 
 RUN go mod download
 
-COPY . .
+COPY . ./
 
-EXPOSE "8080"
+RUN CGO_ENABLED=0 GOOS=linux go build -o /mytask main.go
 
-CMD [ "go", "run", "main.go" ]
+EXPOSE 8080
+
+CMD [ "/mytask" ]
