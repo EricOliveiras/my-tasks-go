@@ -7,10 +7,9 @@ import (
 
 func CorsConfig() gin.HandlerFunc {
 	return cors.New(cors.Config{
-		AllowAllOrigins:  true,
+		AllowOrigins:     []string{"https://my-tasks-project.vercel.app"},
 		AllowMethods:     []string{"*"},
-		AllowHeaders:     []string{"*"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type"},
 		AllowCredentials: true,
 	})
 }
