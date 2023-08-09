@@ -42,15 +42,3 @@ func BaseURL() string {
 
 	return fmt.Sprintf("%s:%s", host, port)
 }
-
-func CookieConfig() CookieConfigModel {
-	cookieConfig := CookieConfigModel{
-		MaxAge:   604800,
-		Path:     "/",
-		Domain:   "localhost",
-		Secure:   true,
-		HttpOnly: true,
-	}
-
-	return cookieConfig
-}
