@@ -8,14 +8,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-type CookieConfigModel struct {
-	MaxAge   int
-	Path     string
-	Domain   string
-	Secure   bool
-	HttpOnly bool
-}
-
 var err = godotenv.Load()
 
 func DbURL() string {
