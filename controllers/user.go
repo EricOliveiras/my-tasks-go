@@ -32,6 +32,8 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	defer c.Request.Body.Close()
+
 	var existingUser models.User
 	if err := database.DB.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
 		c.AbortWithStatusJSON(http.StatusConflict, gin.H{"ERROR::": "Email already exists."})
@@ -105,6 +107,8 @@ func UpdateUser(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
 		return
 	}
+
+	defer c.Request.Body.Close()
 
 	updateUser := models.User{
 		FirstName: input.FirstName,
