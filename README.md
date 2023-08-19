@@ -40,7 +40,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 1. Clone este repositório em sua máquina local:
 
 ```bash
-git clone https://github.com/EricOliveiras/basic-crud-go
+git clone https://github.com/EricOliveiras/basic-crud-go.git
 ```
 
 2. Acesse o diretório do projeto
@@ -58,6 +58,7 @@ docker-compose up -d
 ## Documentação da API
 
 > Utilize no seu insomnia ou postman a url base: http://localhost:8080
+> , Ou utilize este projeto frontend - [My Tasks](https://github.com/EricOliveiras/my-tasks) - criado para utilizar junto com esta API
 
 ### Cria um Usuário
 
