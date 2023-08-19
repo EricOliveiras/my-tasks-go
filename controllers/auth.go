@@ -23,6 +23,8 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	defer c.Request.Body.Close()
+
 	email := req.Email
 	password := req.Password
 
