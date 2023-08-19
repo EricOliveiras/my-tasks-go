@@ -35,6 +35,8 @@ func CreateTask(c *gin.Context) {
 		return
 	}
 
+	defer c.Request.Body.Close()
+
 	input.ID = uuid.New().String()
 
 	userId, err := handlers.GetUsertIdFromClaims(c)
@@ -102,6 +104,8 @@ func UpdateTask(c *gin.Context) {
 		return
 	}
 
+	defer c.Request.Body.Close()
+
 	if err := database.DB.Where("id = ? AND user_id = ?", inputUpdateTask.IdTaskRequest.Id, userId).First(&task).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": "Task not found or not exists."})
 		return
@@ -129,6 +133,8 @@ func DeleteTask(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
 		return
 	}
+
+	defer c.Request.Body.Close()
 
 	userId, err := handlers.GetUsertIdFromClaims(c)
 	if err != nil {
