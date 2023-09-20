@@ -14,7 +14,7 @@ type Claims struct {
 	jwt.RegisteredClaims
 }
 
-var jwtSecret = config.LoadAuthConfig()
+var jwtSecret = config.LoadAuthConfig().AccessSecret
 
 func GenerateToken(id string) (string, error) {
 	claims := Claims{
@@ -25,7 +25,7 @@ func GenerateToken(id string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString(jwtSecret)
+	tokenString, err := token.SignedString([]byte(jwtSecret))
 
 	if err != nil {
 		return "", err
