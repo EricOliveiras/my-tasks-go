@@ -5,7 +5,7 @@ import (
 	r "github/ericoliveiras/basic-crud-go/internal/repositories"
 )
 
-type ServiceWrapper interface {
+type UserServiceWrapper interface {
 	Create(user *models.User) error
 }
 
