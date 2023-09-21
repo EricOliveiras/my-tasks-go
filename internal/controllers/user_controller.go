@@ -17,15 +17,15 @@ type UserController struct {
 func (c *UserController) Create(ctx *gin.Context) {
 	var userRequest req.CreateUserRequest
 	if err := ctx.ShouldBindJSON(&userRequest); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
 		return
 	}
 
 	if err := c.UserService.Create(&userRequest); err == s.ErrUserAlreadyExists {
-		ctx.JSON(http.StatusConflict, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusConflict, gin.H{"ERROR::": err.Error()})
 		return
 	} else if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create user"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"ERROR::": "Failed to create user"})
 		return
 	}
 
@@ -48,4 +48,31 @@ func (c *UserController) Read(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"data": user})
+}
+
+func (c *UserController) Update(ctx *gin.Context) {
+	userId, err := handlers.GetUsertIdFromClaims(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	_, err = c.UserService.Read(userId)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	var updateUser req.UpdateUserRequest
+	if err := ctx.ShouldBindJSON(&updateUser); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if err := c.UserService.Update(userId, updateUser); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.Status(http.StatusOK)
 }
