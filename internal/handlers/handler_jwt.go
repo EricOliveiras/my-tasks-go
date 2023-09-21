@@ -36,7 +36,7 @@ func GenerateToken(id string) (string, error) {
 
 func VerifyJWT(tokenString string) (*Claims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
+		return []byte(jwtSecret), nil
 	})
 	if err != nil {
 		return nil, err
@@ -50,8 +50,8 @@ func VerifyJWT(tokenString string) (*Claims, error) {
 	return claims, nil
 }
 
-func GetUsertIdFromClaims(c *gin.Context) (string, error) {
-	claims, exists := c.Get("claims")
+func GetUsertIdFromClaims(ctx *gin.Context) (string, error) {
+	claims, exists := ctx.Get("claims")
 
 	if !exists {
 		return "", errors.New("Failed to get user id from claims.")
