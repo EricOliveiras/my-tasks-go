@@ -20,5 +20,6 @@ func UserRoutes(server *s.Server) {
 	userRoutes.Use(middleware.AuthMiddleware)
 	{
 		userRoutes.GET("", userController.Read)
+		userRoutes.PATCH("", userController.Update)
 	}
 }
