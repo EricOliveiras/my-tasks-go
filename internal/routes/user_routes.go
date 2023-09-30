@@ -21,5 +21,6 @@ func UserRoutes(server *s.Server) {
 	{
 		userRoutes.GET("", userController.Read)
 		userRoutes.PATCH("", userController.Update)
+		userRoutes.DELETE("", userController.Delete)
 	}
 }
