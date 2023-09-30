@@ -76,3 +76,18 @@ func (c *UserController) Update(ctx *gin.Context) {
 
 	ctx.Status(http.StatusOK)
 }
+
+func (c *UserController) Delete(ctx *gin.Context) {
+	userId, err := handlers.GetUsertIdFromClaims(ctx)
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	if err := c.UserService.Delete(userId); err != nil {
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
+		return
+	}
+
+	ctx.Status(http.StatusOK)
+}
