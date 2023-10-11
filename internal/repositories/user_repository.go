@@ -11,7 +11,7 @@ type IUserRepository interface {
 	Create(user *models.User) error
 	GetByEmail(email string) bool
 	GetById(id string) (models.User, error)
-	Update(id string, user *models.User, updateUser *requests.UpdateUserRequest) error
+	Update(user *models.User, updateUser *requests.UpdateUserRequest) error
 	Delete(id string) error
 }
 
@@ -45,7 +45,7 @@ func (u *UserRepository) GetById(id string) (models.User, error) {
 	return user, nil
 }
 
-func (u *UserRepository) Update(id string, user *models.User, updateUser *requests.UpdateUserRequest) error {
+func (u *UserRepository) Update(user *models.User, updateUser *requests.UpdateUserRequest) error {
 	if err := u.DB.Model(&user).Updates(&updateUser).Error; err != nil {
 		return err
 	}
