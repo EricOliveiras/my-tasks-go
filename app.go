@@ -12,6 +12,7 @@ func Start(cfg *config.Config) {
 
 	routes.UserRoutes(app)
 	routes.AuthRoutes(app)
+	routes.TaskRoutes(app)
 
 	err := app.Start(cfg.HTTP.Port)
 	if err != nil {
