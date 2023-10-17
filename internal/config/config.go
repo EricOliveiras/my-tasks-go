@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
@@ -10,6 +11,7 @@ type Config struct {
 	Auth AuthConfig
 	DB   DBConfig
 	HTTP HTTPConfig
+	Cors gin.HandlerFunc
 }
 
 func NewConfig() *Config {
@@ -22,5 +24,6 @@ func NewConfig() *Config {
 		Auth: LoadAuthConfig(),
 		DB:   LoadDBConfig(),
 		HTTP: LoadHTTPConfig(),
+		Cors: LoadCorsConfig(),
 	}
 }
