@@ -10,6 +10,8 @@ import (
 func Start(cfg *config.Config) {
 	app := server.NewServer(cfg)
 
+	app.Gin.Use(config.LoadCorsConfig())
+
 	routes.UserRoutes(app)
 	routes.AuthRoutes(app)
 	routes.TaskRoutes(app)
