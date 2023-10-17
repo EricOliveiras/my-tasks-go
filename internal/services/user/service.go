@@ -11,8 +11,12 @@ type UserServiceWrapper interface {
 
 type UserService struct {
 	UserRepository *r.UserRepository
+	TaskRepository *r.TaskRepository
 }
 
-func NewUserService(userRepository *r.UserRepository) *UserService {
-	return &UserService{UserRepository: userRepository}
+func NewUserService(userRepository *r.UserRepository, taskRepository *r.TaskRepository) *UserService {
+	return &UserService{
+		UserRepository: userRepository,
+		TaskRepository: taskRepository,
+	}
 }
