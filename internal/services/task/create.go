@@ -3,12 +3,13 @@ package services
 import (
 	"errors"
 	"github/ericoliveiras/basic-crud-go/internal/builders"
+	"github/ericoliveiras/basic-crud-go/internal/models"
 	"github/ericoliveiras/basic-crud-go/internal/requests"
 
 	"github.com/google/uuid"
 )
 
-func (s *TaskService) Create(task *requests.CreateTaskRequest) error {
+func (s *TaskService) Create(task *requests.CreateTaskRequest) (models.Task, error) {
 	id := uuid.New().String()
 	
 	createTask := builders.NewTaskBuilder().
@@ -20,8 +21,8 @@ func (s *TaskService) Create(task *requests.CreateTaskRequest) error {
 		Build()
 
 	if err := s.TaskRepository.Create(&createTask); err != nil {
-		return errors.New("Error to create a new task.")
+		return models.Task{}, errors.New("Error to create a new task.")
 	}
 
-	return nil
+	return createTask, nil
 }
