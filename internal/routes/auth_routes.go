@@ -14,5 +14,5 @@ func AuthRoutes(server *s.Server) {
 
 	authRoutes := server.Gin.Group("/auth")
 
-	authRoutes.POST("", loginController.Login)
+	authRoutes.POST("/login", loginController.Login)
 }
