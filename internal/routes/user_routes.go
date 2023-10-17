@@ -10,7 +10,8 @@ import (
 
 func UserRoutes(server *s.Server) {
 	userRepository := repositories.NewUserRepository(server.DB)
-	userService := services.NewUserService(userRepository)
+	taskRepository := repositories.NewTaskRepository(server.DB)
+	userService := services.NewUserService(userRepository, taskRepository)
 	userController := controllers.UserController{UserService: userService}
 
 	userRoutes := server.Gin.Group("/user")
