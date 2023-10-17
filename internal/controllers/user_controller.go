@@ -8,6 +8,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 type UserController struct {
@@ -47,7 +49,17 @@ func (c *UserController) Read(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"data": user})
+	formatUser := responses.UserResponse{
+		ID:        user.ID,
+		FirstName: cases.Title(language.BrazilianPortuguese).String(user.FirstName),
+		LastName:  cases.Title(language.BrazilianPortuguese).String(user.LastName),
+		Email:     user.Email,
+		Tasks:     user.Tasks,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"data": formatUser})
 }
 
 func (c *UserController) Update(ctx *gin.Context) {
