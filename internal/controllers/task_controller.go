@@ -30,12 +30,14 @@ func (c *TaskController) Create(ctx *gin.Context) {
 	newTask.UserId = userId
 	newTask.Finished = false
 
-	if err := c.TaskService.Create(&newTask); err != nil {
+	var task models.Task
+	task, err = c.TaskService.Create(&newTask)
+	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"ERROR::": err.Error()})
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"data": newTask})
+	ctx.JSON(http.StatusCreated, gin.H{"data": task})
 }
 
 func (c *TaskController) Read(ctx *gin.Context) {
