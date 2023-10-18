@@ -8,25 +8,6 @@ Este projeto foi desenvolvido como uma aplicação em Go, que utiliza as melhore
 
 Obs: Você pode utilizar este projeto front-end - [My Tasks](https://github.com/EricOliveiras/my-tasks) - para consumir está API.
 
-## Próximos passos
-
-- [x] Finalizar os métodos de Atualizar e deleter usuário.
-- [x] Configurar armazenamento seguro de senhas.
-  - [x] Utilizar algoritmos de hash seguros, como bcrypt.
-  - [x] Criptografar e armazenar as senhas dos usuários de forma segura.
-- [x] Separar responsibilidade de rotas da função main.
-- [x] Criar novo modelo de Task, adicionar na migration, criar seu controller e suas rotas.
-- [x] Adicionar autenticação com JWT.
-- [x] Adicionar autorização aos endpoints.
-- [ ] Realizar testes automatizados.
-  - [ ] Escrever testes unitários para as funcionalidades implementadas.
-  - [ ] Testar casos de sucesso e casos de erro.
-- [ ] Melhorar a segurança da aplicação.
-  - [ ] Implementar mecanismos de prevenção contra ataques, como injeção de SQL e XSS (Cross-Site Scripting).
-  - [ ] Aplicar práticas recomendadas de segurança em todas as camadas da aplicação.
-- [ ] Refatorar o código conforme necessário.
-  - [ ] Identificar trechos de código repetitivos e consolidá-los em funções ou pacotes reutilizáveis.
-  - [ ] Aplicar boas práticas de codificação, como nomeação adequada de variáveis, modularização e organização do código.
 
 ## Pré-requisitos
 
@@ -91,14 +72,14 @@ docker-compose up -d
 ### Retorna um usuário
 
 ```http
-  GET /user/me
+  GET /user
   Authorization: Bearer Token
 ```
 
 ### Atualiza um usuário
 
 ```http
-  PUT /user
+  PATCH /user
   Authorization: Bearer Token
 ```
 
@@ -130,7 +111,7 @@ docker-compose up -d
 ### Atualiza uma tarefa
 
 ```http
-  PUT /task
+  PATCH /task
   Authorization: Bearer Token
 ```
 
