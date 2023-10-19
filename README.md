@@ -1,4 +1,4 @@
-# basic-crud-go
+# My Tasks Go
 
 ## Sobre o Projeto
 
