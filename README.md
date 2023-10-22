@@ -21,7 +21,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 1. Clone este repositório em sua máquina local:
 
 ```bash
-git clone https://github.com/EricOliveiras/basic-crud-go.git
+git clone https://github.com/EricOliveiras/my-tasks-go
 ```
 
 2. Acesse o diretório do projeto
